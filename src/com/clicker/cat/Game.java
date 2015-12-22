@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class Game extends JFrame {
 	private static final long serialVersionUID = 2269971701250845501L;
@@ -13,6 +14,8 @@ public class Game extends JFrame {
 	Integer pillowQty = 0;
 	Integer bucketQty = 0;
 	Integer tentQty = 0;
+	Integer fishes = 0;
+	Rate rates;
 	JLabel ballQtyLbl;
 	JLabel pillowQtyLbl;
 	JLabel bucketQtyLbl;
@@ -21,9 +24,14 @@ public class Game extends JFrame {
 	JButton ballBtn;
 	JButton tentBtn;
 	JButton bucketBtn;
+	JLabel totalFpsLbl;
+	JLabel totalFpstxtLbl;
+	private JLabel fishesLbl;
+	private JLabel lblNewLabel_1;
 	Game() {
 		setBounds(200, 200, 1024, 700);
 		getContentPane().setLayout(null);
+		rates = new Rate();
 		
 		JButton ballBtn = new JButton("BALL ICON");
 		ballBtn.setIcon(new ImageIcon(getClass().getResource("ball-icon.png")));
@@ -33,6 +41,7 @@ public class Game extends JFrame {
 		ballBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ballQty++;
+				totalFpsLbl.setText(rates.addBall().toString());
 				ballQtyLbl.setText(ballQty.toString());
 			}
 		});
@@ -45,6 +54,7 @@ public class Game extends JFrame {
 		pillowBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pillowQty++;
+				totalFpsLbl.setText(rates.addPillow().toString());
 				pillowQtyLbl.setText(pillowQty.toString());
 			}
 		});
@@ -57,6 +67,7 @@ public class Game extends JFrame {
 		bucketBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				bucketQty++;
+				totalFpsLbl.setText(rates.addBucket().toString());
 				bucketQtyLbl.setText(bucketQty.toString());
 			}
 		});
@@ -69,6 +80,7 @@ public class Game extends JFrame {
 		tentBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tentQty++;
+				totalFpsLbl.setText(rates.addTent().toString());
 				tentQtyLbl.setText(tentQty.toString());
 			}
 		});
@@ -93,6 +105,43 @@ public class Game extends JFrame {
 		tentQtyLbl.setFont(new Font("Tahoma", Font.PLAIN, 64));
 		tentQtyLbl.setBounds(269, 500, 85, 127);
 		getContentPane().add(tentQtyLbl);
+		
+		totalFpsLbl = new JLabel("0");
+		totalFpsLbl.setHorizontalAlignment(SwingConstants.RIGHT);
+		totalFpsLbl.setFont(new Font("Tahoma", Font.PLAIN, 44));
+		totalFpsLbl.setBounds(354, 20, 317, 70);
+		getContentPane().add(totalFpsLbl);
+		
+		totalFpstxtLbl = new JLabel("Fishes Per Second (FPS)");
+		totalFpstxtLbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		totalFpstxtLbl.setBounds(681, 32, 317, 70);
+		getContentPane().add(totalFpstxtLbl);
+		
+		fishesLbl = new JLabel("Fishes");
+		fishesLbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		fishesLbl.setBounds(681, 114, 216, 41);
+		getContentPane().add(fishesLbl);
+		
+		lblNewLabel_1 = new JLabel("0");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 44));
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_1.setBounds(364, 97, 307, 50);
+		getContentPane().add(lblNewLabel_1);
+		
+		// Lambda Runnable
+		Runnable updateTotalFps = () -> {
+			while(true) {
+				System.out.println("Updating total fishes");
+				try {
+					Thread.sleep(20);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			}
+		};
+		 
+		// start the thread
+		new Thread(updateTotalFps).start();
 		
 	}
 }

@@ -10,6 +10,7 @@ public class CatClicker {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			gameframe = new Game();
 			gameframe.setVisible(true);
+			gameframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		} catch (Exception e) {
 			System.out.println("An error has occured!");
 		}
