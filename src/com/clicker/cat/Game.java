@@ -10,12 +10,13 @@ import javax.swing.SwingConstants;
 
 public class Game extends JFrame {
 	private static final long serialVersionUID = 2269971701250845501L;
+	private static Game instance = new Game();
+	Rate rates;
 	Integer ballQty = 0;
 	Integer pillowQty = 0;
 	Integer bucketQty = 0;
 	Integer tentQty = 0;
 	Integer fishes = 0;
-	Rate rates;
 	JLabel ballQtyLbl;
 	JLabel pillowQtyLbl;
 	JLabel bucketQtyLbl;
@@ -28,7 +29,7 @@ public class Game extends JFrame {
 	JLabel totalFpstxtLbl;
 	private JLabel fishesLbl;
 	private JLabel lblNewLabel_1;
-	Game() {
+	private Game() {
 		setBounds(200, 200, 1024, 700);
 		getContentPane().setLayout(null);
 		rates = new Rate();
@@ -142,6 +143,10 @@ public class Game extends JFrame {
 		 
 		// start the thread
 		new Thread(updateTotalFps).start();
-		
 	}
+	
+	public static Game getInstance() {
+		return instance;
+	}
+	
 }
