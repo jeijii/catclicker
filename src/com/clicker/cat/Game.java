@@ -102,16 +102,19 @@ public class Game extends JFrame {
 		pillowQtyLbl.setFont(new Font("Tahoma", Font.PLAIN, 64));
 		pillowQtyLbl.setBounds(269, 180, 85, 127);
 		getContentPane().add(pillowQtyLbl);
+		pillowQtyLbl.setVisible(false);
 		
 		bucketQtyLbl = new JLabel(bucketQty.toString());
 		bucketQtyLbl.setFont(new Font("Tahoma", Font.PLAIN, 64));
 		bucketQtyLbl.setBounds(269, 340, 85, 127);
 		getContentPane().add(bucketQtyLbl);
+		bucketQtyLbl.setVisible(false);
 		
 		tentQtyLbl = new JLabel(tentQty.toString());
 		tentQtyLbl.setFont(new Font("Tahoma", Font.PLAIN, 64));
 		tentQtyLbl.setBounds(269, 500, 85, 127);
 		getContentPane().add(tentQtyLbl);
+		tentQtyLbl.setVisible(false);
 		
 		totalFpsLbl = new JLabel("0");
 		totalFpsLbl.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -147,18 +150,24 @@ public class Game extends JFrame {
 				}
 				if(fishes>100.00){
 					pillowBtn.setVisible(true);
+					pillowQtyLbl.setVisible(true);
 				} else if(fishes<10){
 					pillowBtn.setVisible(false);
+					pillowQtyLbl.setVisible(false);
 				}
 				if(fishes>1000.00){
 					bucketBtn.setVisible(true);
+					bucketQtyLbl.setVisible(true);
 				} else if(fishes <1000){
 					bucketBtn.setVisible(false);
+					bucketQtyLbl.setVisible(false);
 				}
 				if(fishes>100000.00){
 					tentBtn.setVisible(true);
+					tentQtyLbl.setVisible(true);
 				}else if(fishes<100000.00){
 					tentBtn.setVisible(false);
+					tentQtyLbl.setVisible(false);
 				}
 			}
 		};
