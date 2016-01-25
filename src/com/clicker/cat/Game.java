@@ -3,6 +3,7 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -11,12 +12,13 @@ import javax.swing.SwingConstants;
 public class Game extends JFrame {
 	private static final long serialVersionUID = 2269971701250845501L;
 	private static Game instance = new Game();
+	private static DecimalFormat df = new DecimalFormat("##.00");
 	Rate rates;
+	Double fishes = 0.0;
 	Integer ballQty = 0;
 	Integer pillowQty = 0;
 	Integer bucketQty = 0;
 	Integer tentQty = 0;
-	Integer fishes = 0;
 	JLabel ballQtyLbl;
 	JLabel pillowQtyLbl;
 	JLabel bucketQtyLbl;
@@ -28,7 +30,7 @@ public class Game extends JFrame {
 	JLabel totalFpsLbl;
 	JLabel totalFpstxtLbl;
 	private JLabel fishesLbl;
-	private JLabel lblNewLabel_1;
+	private JLabel fishestxtLbl;
 	private Game() {
 		setBounds(200, 200, 1024, 700);
 		getContentPane().setLayout(null);
@@ -51,25 +53,28 @@ public class Game extends JFrame {
 		pillowBtn.setIcon(new ImageIcon(getClass().getResource("pillow-icon.png")));
 		pillowBtn.setBounds(10, 180, 239, 127);
 		getContentPane().add(pillowBtn);
-		pillowBtn.setVisible(true);
+		pillowBtn.setVisible(false);
 		pillowBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pillowQty++;
 				totalFpsLbl.setText(rates.addPillow().toString());
 				pillowQtyLbl.setText(pillowQty.toString());
+				fishes = fishes - 100;
 			}
 		});
+		
 		
 		JButton bucketBtn = new JButton("BUCKET ICON");
 		bucketBtn.setIcon(new ImageIcon(getClass().getResource("bucket-icon.png")));
 		bucketBtn.setBounds(10, 340, 239, 127);
 		getContentPane().add(bucketBtn);
-		bucketBtn.setVisible(true);
+		bucketBtn.setVisible(false);
 		bucketBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				bucketQty++;
 				totalFpsLbl.setText(rates.addBucket().toString());
 				bucketQtyLbl.setText(bucketQty.toString());
+				fishes = fishes - 1000;
 			}
 		});
 		
@@ -77,12 +82,13 @@ public class Game extends JFrame {
 		tentBtn.setIcon(new ImageIcon(getClass().getResource("tent-icon.png")));
 		tentBtn.setBounds(10, 500, 239, 127);
 		getContentPane().add(tentBtn);
-		tentBtn.setVisible(true);
+		tentBtn.setVisible(false);
 		tentBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tentQty++;
 				totalFpsLbl.setText(rates.addTent().toString());
 				tentQtyLbl.setText(tentQty.toString());
+				fishes = fishes - 100000;
 			}
 		});
 
@@ -118,23 +124,49 @@ public class Game extends JFrame {
 		totalFpstxtLbl.setBounds(681, 32, 317, 70);
 		getContentPane().add(totalFpstxtLbl);
 		
-		fishesLbl = new JLabel("Fishes");
-		fishesLbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		fishesLbl.setBounds(681, 114, 216, 41);
-		getContentPane().add(fishesLbl);
+		fishestxtLbl = new JLabel("Fishes");
+		fishestxtLbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		fishestxtLbl.setBounds(681, 114, 216, 41);
+		getContentPane().add(fishestxtLbl);
 		
-		lblNewLabel_1 = new JLabel("0");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 44));
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_1.setBounds(364, 97, 307, 50);
-		getContentPane().add(lblNewLabel_1);
+		fishesLbl = new JLabel(fishes.toString());
+		fishesLbl.setFont(new Font("Tahoma", Font.PLAIN, 44));
+		fishesLbl.setHorizontalAlignment(SwingConstants.RIGHT);
+		fishesLbl.setBounds(364, 97, 307, 50);
+		getContentPane().add(fishesLbl);
 		
 		// Lambda Runnable
 		Runnable updateTotalFps = () -> {
 			while(true) {
-				System.out.println("Updating total fishes");
 				try {
-					Thread.sleep(20);
+					Thread.sleep(50);
+					fishes+=((double)rates.totalFps/20);
+					fishesLbl.setText(df.format(fishes));
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				if(fishes>100.00){
+					pillowBtn.setVisible(true);
+				} else if(fishes<10){
+					pillowBtn.setVisible(false);
+				}
+				if(fishes>1000.00){
+					bucketBtn.setVisible(true);
+				} else if(fishes <1000){
+					bucketBtn.setVisible(false);
+				}
+				if(fishes>100000.00){
+					tentBtn.setVisible(true);
+				}else if(fishes<100000.00){
+					tentBtn.setVisible(false);
+				}
+			}
+		};
+		
+		Runnable checkAvailability = () -> {
+			while(true) {
+				try {
+					Thread.sleep(1000);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
